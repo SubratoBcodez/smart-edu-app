@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "977437032485",
+    "project_id": "idp-lab-2",
+    "storage_bucket": "idp-lab-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977437032485:android:d235fd05c253b1e747ffcc",
+        "android_client_info": {
+          "package_name": "com.example.untitled5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977437032485-3tkq65bk55ipk3jhnfhlcc5nro8140b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA32EISfqLHtpbtWJrieU3YcOLUI_gkfRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977437032485-3tkq65bk55ipk3jhnfhlcc5nro8140b5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
