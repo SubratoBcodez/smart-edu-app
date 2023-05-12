@@ -11,7 +11,7 @@ class AppStyle {
             backgroundColor: Colors.transparent,
             elevation: 0,
             child: Image.asset(
-              'assets/file/load.gif',
+              'assets/file/loading.gif',
               height: 100,
             ),
           );

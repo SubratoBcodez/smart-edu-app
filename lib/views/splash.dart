@@ -19,10 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
     print(loginchk);
     // print(reg);
 
-    if (loginchk == true) {
+    if (loginchk == true || regchk == true) {
       Get.toNamed(login);
-    } else if (regchk == true) {
-      Get.toNamed(reg);
     } else {
       Get.toNamed(intro);
     }
@@ -45,8 +43,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 padding: const EdgeInsets.only(top: 220),
                 child: Center(
                     child: Image.asset(
-                  'assets/images/main.png',
-                  width: 130,
+                  'assets/images/slide_1.png',
+                  width: 100,
+                  height: 100,
                 )),
               ),
               // Center(child: Image.asset('assets/images/main.png', width: 120,),),

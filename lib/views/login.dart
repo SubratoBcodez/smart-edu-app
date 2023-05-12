@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:untitled5/logic/auth.dart';
 
 import '../custom/button.dart';
 import '../custom/route.dart';
@@ -62,7 +61,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 customButton('Sign In', () {
                   if (_formKey.currentState!.validate()) {
-                    Get.toNamed(home);
+                    final email = _emailController.text;
+                    final pass = _passController.text;
+                    Auth().log(email, pass, context);
                   }
                 }),
                 SizedBox(
