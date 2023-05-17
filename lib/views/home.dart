@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:untitled5/custom/route.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  List menu = [
+    {
+      'menu_name': 'Account',
+    },
+    {
+      'menu_name': 'Teachers',
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -119,14 +128,18 @@ class Home extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 10,
-                      mainAxisSpacing: 20),
+                      mainAxisSpacing: 20,
+                      childAspectRatio: 1.0),
                   itemCount: 6,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
+                    return Ink(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.green),
-                      child: Text(index.toString()),
+                      child: InkWell(
+                        child: Text(menu[index]['menu_name']),
+                        onTap: () => Get.toNamed(account),
+                      ),
                     );
                   },
                 ),
