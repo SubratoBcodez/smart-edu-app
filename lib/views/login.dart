@@ -2,16 +2,27 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:untitled5/logic/auth.dart';
 
 import '../custom/button.dart';
 import '../custom/route.dart';
 import '../custom/text.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
+  bool _isHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,19 +53,29 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
-                customText(
-                  'password',
-                  Icons.remove_red_eye_outlined,
-                  TextInputType.text,
-                  _passController,
-                  (val) {
+                TextFormField(
+                  obscureText: _isHidden,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isHidden = !_isHidden;
+                        });
+                      },
+                      child: Icon(
+                          _isHidden ? Icons.visibility_off : Icons.visibility),
+                    ),
+                  ),
+                  controller: _passController,
+                  keyboardType: TextInputType.text,
+                  validator: (val) {
                     if (val!.isEmpty) {
                       return "can't be empty";
                     } else if (val.length < 8) {
                       return "can't be less then 8";
                     }
                   },
-                  obscureText: true,
                 ),
                 SizedBox(
                   height: 15,

@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:untitled5/custom/route.dart';
 
 class Home extends StatelessWidget {
+  final box = GetStorage();
   List menu = [
     {
-      'menu_name': 'Account',
+      'title': 'Profile',
+      'icon': 'assets/icons/student.png',
+      'route': 'account'
     },
     {
-      'menu_name': 'Teachers',
-    }
+      'title': 'Subjects',
+      'icon': 'assets/icons/training.png',
+      'route': 'subjects'
+    },
+    {
+      'title': 'Exam Schedule',
+      'icon': 'assets/icons/exam.png',
+      'route': 'exam'
+    },
+    {
+      'title': 'Class Schedule',
+      'icon': 'assets/icons/seminar.png',
+      'route': 'classes'
+    },
+    {'title': 'Notice', 'icon': 'assets/icons/notice.png', 'route': 'notice'},
+    {'title': 'Developers', 'icon': 'assets/icons/about.png', 'route': 'about'}
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // backgroundColor: Colors.greenAccent,
         appBar: AppBar(
           backgroundColor: Colors.green,
           automaticallyImplyLeading: false,
-          title: Text(
-            "Home",
-            style: TextStyle(
-              color: Colors.white,
+          title: Center(
+            child: Text(
+              "Home",
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -43,8 +64,8 @@ class Home extends StatelessWidget {
                 height: 15,
               ),
               SizedBox(
-                height: 100,
-                child: ListView(
+                height: 170,
+                child: PageView(
                   scrollDirection: Axis.horizontal,
                   children: [
                     Container(
@@ -70,44 +91,56 @@ class Home extends StatelessWidget {
                           ],
                         ),
                       ),
-                      height: 100,
-                      width: 220,
+                      height: 170,
                       decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                          image: DecorationImage(
+                              image: AssetImage('assets/file/not2.jpg'),
+                              fit: BoxFit.cover),
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurStyle: BlurStyle.outer,
+                                blurRadius: 2,
+                                offset: Offset(0, 1))
+                          ]),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Notice",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              "is simply dummy text of the printing and typesetting industry.",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white),
-                            ),
-                          ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Notice",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ),
+                              Text(
+                                "is simply dummy text of the printing and typesetting industry.",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      height: 100,
-                      width: 220,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(15),
+                        height: 170,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/file/not1.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
                     ),
                   ],
@@ -135,10 +168,40 @@ class Home extends StatelessWidget {
                     return Ink(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.green),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurStyle: BlurStyle.outer,
+                                blurRadius: 2,
+                                offset: Offset(0, 1))
+                          ]),
                       child: InkWell(
-                        child: Text(menu[index]['menu_name']),
-                        onTap: () => Get.toNamed(account),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 15,
+                          ),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                menu[index]['icon'],
+                                height: 50,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                              Divider(
+                                color: Colors.transparent,
+                                height: 10,
+                              ),
+                              Text(
+                                menu[index]['title'],
+                                style: TextStyle(color: Colors.green),
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () => Get.toNamed(menu[index]['route']),
                       ),
                     );
                   },

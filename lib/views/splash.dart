@@ -13,13 +13,15 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final box = GetStorage();
+
   chooseScreen(context) {
     var loginchk = box.read('logchk');
     var regchk = box.read('regchk');
-    print(loginchk);
-    // print(reg);
+    var logged = box.read('logged');
 
-    if (loginchk == true || regchk == true) {
+    if (logged == true) {
+      Get.toNamed(home);
+    } else if (loginchk == true || regchk == true) {
       Get.toNamed(login);
     } else {
       Get.toNamed(intro);
@@ -43,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 padding: const EdgeInsets.only(top: 220),
                 child: Center(
                     child: Image.asset(
-                  'assets/images/slide_1.png',
+                  'assets/icons/schedule.png',
                   width: 100,
                   height: 100,
                 )),

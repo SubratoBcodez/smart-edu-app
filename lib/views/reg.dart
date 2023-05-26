@@ -29,6 +29,7 @@ class _RegScreenState extends State<RegScreen> {
   final _formKey = GlobalKey<FormState>();
 
   XFile? image;
+  bool _isHidden = true;
 
   pickImageGallery() async {
     final ImagePicker picker = ImagePicker();
@@ -115,25 +116,59 @@ class _RegScreenState extends State<RegScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  customText('password', Icons.remove_red_eye_outlined,
-                      TextInputType.text, _passController, (val) {
-                    if (val!.isEmpty) {
-                      return "can't be empty";
-                    } else if (val.length < 8) {
-                      return "can't be less then 8";
-                    }
-                  }, obscureText: true),
+                  TextFormField(
+                    obscureText: _isHidden,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isHidden = !_isHidden;
+                          });
+                        },
+                        child: Icon(_isHidden
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                      ),
+                    ),
+                    controller: _passController,
+                    keyboardType: TextInputType.text,
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return "can't be empty";
+                      } else if (val.length < 8) {
+                        return "can't be less then 8";
+                      }
+                    },
+                  ),
                   SizedBox(
                     height: 15,
                   ),
-                  customText('confirm password', Icons.remove_red_eye_outlined,
-                      TextInputType.text, _uppassController, (val) {
-                    if (val!.isEmpty) {
-                      return "can't be empty";
-                    } else if (val.length < 8) {
-                      return "can't be less then 8";
-                    }
-                  }, obscureText: true),
+                  TextFormField(
+                    obscureText: _isHidden,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isHidden = !_isHidden;
+                          });
+                        },
+                        child: Icon(_isHidden
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                      ),
+                    ),
+                    controller: _uppassController,
+                    keyboardType: TextInputType.text,
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return "can't be empty";
+                      } else if (val.length < 8) {
+                        return "can't be less then 8";
+                      }
+                    },
+                  ),
                   SizedBox(
                     height: 15,
                   ),

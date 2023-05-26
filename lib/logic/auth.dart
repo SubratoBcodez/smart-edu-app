@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:untitled5/custom/route.dart';
 import 'package:untitled5/custom/style.dart';
 
 class Auth {
+  final box = GetStorage();
   upload(Image, context, fname, lname, email, pass) async {
     try {
       AppStyle().progressDialog(context);
@@ -33,6 +35,7 @@ class Auth {
         email: email,
         password: pass,
       );
+      final box = GetStorage();
 
       var userCredential = credential.user;
 
@@ -49,6 +52,7 @@ class Auth {
           Get.back();
           Get.showSnackbar(
               AppStyle().successSnack('Account Created Successfull'));
+          box.write('logged', true);
           Get.toNamed(home);
         });
       } else {}
@@ -77,11 +81,13 @@ class Auth {
       AppStyle().progressDialog(context);
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pass);
+      final box = GetStorage();
 
       var userCredenttial = credential.user;
       if (credential.user!.uid.isNotEmpty) {
         Get.back();
         Get.showSnackbar(AppStyle().successSnack('Access Granted'));
+        box.write('logged', true);
         Get.toNamed(home);
       }
     } on FirebaseAuthException catch (e) {
@@ -93,6 +99,9 @@ class Auth {
         Get.back();
         Get.showSnackbar(
             AppStyle().failedSnack('Wrong password provided for that user.'));
+      } else {
+        Get.back();
+        Get.showSnackbar(AppStyle().failedSnack('Something went wrong'));
       }
     }
   }
