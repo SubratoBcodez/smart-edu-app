@@ -11,7 +11,7 @@ import 'package:untitled5/custom/style.dart';
 
 class Auth {
   final box = GetStorage();
-  upload(Image, context, fname, lname, email, pass) async {
+  upload(Image, context, fname, lname, email, idnum, pass) async {
     try {
       AppStyle().progressDialog(context);
       File imageFile = File(Image.path);
@@ -21,31 +21,31 @@ class Auth {
       TaskSnapshot snapshot = await uploadTask;
       String imgUrl = await snapshot.ref.getDownloadURL();
       Get.back();
-      reg(fname, lname, email, pass, imgUrl);
+      reg(fname, lname, email, idnum, pass, imgUrl);
       // print(imgUrl);
     } catch (e) {
       Get.showSnackbar(AppStyle().failedSnack('Something went wrong'));
     }
   }
 
-  reg(fname, lname, email, pass, imgUrl) async {
+  reg(fname, lname, idnum, email, pass, imgUrl) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: pass,
       );
-      final box = GetStorage();
 
       var userCredential = credential.user;
 
-      if (credential.user!.uid.isNotEmpty) {
+      if (userCredential!.uid.isNotEmpty) {
         CollectionReference reference =
             FirebaseFirestore.instance.collection('students');
         reference.doc().set({
-          'email': email,
           'f_name': fname,
           'l_name': lname,
+          'idnum': idnum,
+          'email': email,
           'pass': pass,
           'picture': imgUrl,
         }).then((value) {
@@ -53,6 +53,7 @@ class Auth {
           Get.showSnackbar(
               AppStyle().successSnack('Account Created Successfull'));
           box.write('logged', true);
+          box.write('idnum', idnum);
           Get.toNamed(home);
         });
       } else {}
@@ -81,13 +82,13 @@ class Auth {
       AppStyle().progressDialog(context);
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pass);
-      final box = GetStorage();
 
       var userCredenttial = credential.user;
-      if (credential.user!.uid.isNotEmpty) {
+      if (userCredenttial!.uid.isNotEmpty) {
         Get.back();
         Get.showSnackbar(AppStyle().successSnack('Access Granted'));
         box.write('logged', true);
+        box.write('email', email);
         Get.toNamed(home);
       }
     } on FirebaseAuthException catch (e) {

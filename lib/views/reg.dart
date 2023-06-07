@@ -17,14 +17,14 @@ class RegScreen extends StatefulWidget {
 }
 
 class _RegScreenState extends State<RegScreen> {
+  final TextEditingController _fnameController = TextEditingController();
+
+  final TextEditingController _lnameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _uppassController = TextEditingController();
-
-  final TextEditingController _fnameController = TextEditingController();
-
-  final TextEditingController _lnameController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -96,6 +96,17 @@ class _RegScreenState extends State<RegScreen> {
                   ),
                   customText('last name', Icons.account_circle_outlined,
                       TextInputType.text, _lnameController, (val) {
+                    if (val!.isEmpty) {
+                      return "can't be empty";
+                    } else if (val.length < 5) {
+                      return "can't be less then 5";
+                    }
+                  }),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  customText('ID', Icons.book_online_outlined,
+                      TextInputType.text, _idController, (val) {
                     if (val!.isEmpty) {
                       return "can't be empty";
                     } else if (val.length < 5) {
@@ -179,9 +190,11 @@ class _RegScreenState extends State<RegScreen> {
                     } else if (_formKey.currentState!.validate()) {
                       final fname = _fnameController.text;
                       final lname = _lnameController.text;
+                      final idnum = _idController.text;
                       final email = _emailController.text;
                       final pass = _passController.text;
-                      Auth().upload(image, context, fname, lname, email, pass);
+                      Auth().upload(
+                          image, context, fname, lname, idnum, email, pass);
                       // Get.toNamed(home);
                       //Get.showSnackbar(AppStyle().successSnack('Access Granted'));
                     } else {
