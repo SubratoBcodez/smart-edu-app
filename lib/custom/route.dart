@@ -8,6 +8,7 @@ import '../views/login.dart';
 import '../views/pages/account.dart';
 import '../views/pages/exam.dart';
 import '../views/pages/notice.dart';
+import '../views/pages/notice_page.dart';
 import '../views/pages/subjects.dart';
 import '../views/reg.dart';
 import '../views/splash.dart';
@@ -22,6 +23,7 @@ const String subjects = '/subjects';
 const String classes = '/classes';
 const String exam = '/exam';
 const String notice = '/notice';
+const String notpage = '/noticepage';
 const String about = '/about';
 // const String err = '/err';
 
@@ -36,6 +38,7 @@ List<GetPage> getPages = [
   GetPage(name: classes, page: () => ClassSch()),
   GetPage(name: exam, page: () => Exam()),
   GetPage(name: notice, page: () => Notice()),
+  GetPage(name: notpage, page: () => NoticePage(data: Get.arguments)),
   GetPage(name: about, page: () => Developers()),
 
   // GetPage(name: err, page: ()=>SplashScreen()),

@@ -1,10 +1,58 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:untitled5/custom/route.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  List data = [];
+
+  bool notice = false;
+  bool user = false;
+  String? idnum;
+  fetchNoticeData() {
+    FirebaseFirestore.instance
+        .collection('notice')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        data.add({
+          'title': element['title'],
+          'date': element['date'],
+          'img_url': element['img_url'],
+          'document_id': element.id,
+        });
+      });
+      setState(() {
+        notice = true;
+      });
+    });
+  }
+
+  Stream<DocumentSnapshot> getUserData() {
+    return FirebaseFirestore.instance
+        .collection('students')
+        .doc(idnum)
+        .snapshots();
+  }
+
+  @override
+  void initState() {
+    fetchNoticeData();
+    getUserData();
+    idnum = box.read('idnum');
+    super.initState();
+  }
+
   final box = GetStorage();
+
   List menu = [
     {
       'title': 'Profile',
@@ -30,6 +78,17 @@ class Home extends StatelessWidget {
     {'title': 'Developers', 'icon': 'assets/icons/about.png', 'route': 'about'}
   ];
 
+  Future<Map<String, dynamic>> getCurrentUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').doc(idnum).get();
+      return snapshot.data() as Map<String, dynamic>;
+    } else {
+      throw Exception('User not found');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,102 +111,104 @@ class Home extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Hello, Subrato",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                "ID : 202002053",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                height: 170,
-                child: PageView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Notice",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              "is simply dummy text of the printing and typesetting industry.",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                      height: 170,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/file/not2.jpg'),
-                              fit: BoxFit.cover),
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurStyle: BlurStyle.outer,
-                                blurRadius: 2,
-                                offset: Offset(0, 1))
-                          ]),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Column(
+              FutureBuilder(
+                future: getCurrentUserData(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  if (snapshot.hasData) {
+                    Map<String, dynamic> userData = snapshot.data!;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
+                        children: [
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Notice",
+                                'Hello ${userData['f_name']}!',
                                 style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
+                                    fontSize: 25, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                "is simply dummy text of the printing and typesetting industry.",
+                                'ID :  ${userData['idnum']}!',
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
+                                    fontSize: 15, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
-                        ),
-                        height: 170,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/file/not1.jpg'),
-                            fit: BoxFit.cover,
-                          ),
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.green,
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+              Divider(
+                thickness: 1,
+                color: Colors.green,
               ),
               SizedBox(
-                height: 15,
+                height: 150,
+                child: Container(
+                  child: Visibility(
+                    visible: notice,
+                    replacement: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.length,
+                        itemBuilder: (_, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.toNamed(notpage,
+                                          arguments: data[index]);
+                                    },
+                                    splashColor: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: data[index]['img_url'][0],
+                                        key: UniqueKey(),
+                                        width: double.maxFinite,
+                                        height: 110,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )),
+                                Positioned(
+                                  bottom: 5,
+                                  left: 10,
+                                  right: 10,
+                                  child: Text(
+                                    data[index]['title'],
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.green),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ),
               ),
               Divider(
                 thickness: 1,
