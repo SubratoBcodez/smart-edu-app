@@ -53,7 +53,10 @@ class Auth {
           Get.showSnackbar(
               AppStyle().successSnack('Account Created Successfull'));
           box.write('logged', true);
+          box.write('fname', fname);
           box.write('idnum', idnum);
+          box.write('email', email);
+
           Get.toNamed(home);
         });
       } else {}
@@ -89,6 +92,7 @@ class Auth {
         Get.showSnackbar(AppStyle().successSnack('Access Granted'));
         box.write('logged', true);
         box.write('email', email);
+
         Get.toNamed(home);
       }
     } on FirebaseAuthException catch (e) {

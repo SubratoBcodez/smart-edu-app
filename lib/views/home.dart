@@ -16,7 +16,9 @@ class _HomeState extends State<Home> {
 
   bool notice = false;
   bool user = false;
+  String? fname;
   String? idnum;
+  String? email;
   fetchNoticeData() {
     FirebaseFirestore.instance
         .collection('notice')
@@ -36,18 +38,12 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Stream<DocumentSnapshot> getUserData() {
-    return FirebaseFirestore.instance
-        .collection('students')
-        .doc(idnum)
-        .snapshots();
-  }
-
   @override
   void initState() {
     fetchNoticeData();
-    getUserData();
+    fname = box.read('fname');
     idnum = box.read('idnum');
+    email = box.read('email');
     super.initState();
   }
 
@@ -67,7 +63,7 @@ class _HomeState extends State<Home> {
     {
       'title': 'Exam Schedule',
       'icon': 'assets/icons/exam.png',
-      'route': 'exam'
+      'route': 'exam_nav'
     },
     {
       'title': 'Class Schedule',
@@ -77,17 +73,6 @@ class _HomeState extends State<Home> {
     {'title': 'Notice', 'icon': 'assets/icons/notice.png', 'route': 'notice'},
     {'title': 'Developers', 'icon': 'assets/icons/about.png', 'route': 'about'}
   ];
-
-  Future<Map<String, dynamic>> getCurrentUserData() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentSnapshot snapshot =
-          await FirebaseFirestore.instance.collection('users').doc(idnum).get();
-      return snapshot.data() as Map<String, dynamic>;
-    } else {
-      throw Exception('User not found');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,52 +96,35 @@ class _HomeState extends State<Home> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder(
-                future: getCurrentUserData(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                  if (snapshot.hasData) {
-                    Map<String, dynamic> userData = snapshot.data!;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hello ${userData['f_name']}!',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                'ID :  ${userData['idnum']}!',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.green,
-                            ),
-                          )
-                        ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hello, $fname',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w600),
                       ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
+                      Text(
+                        'ID : $idnum ',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.green,
+                    child: Icon(Icons.person_outlined),
+                  )
+                ],
               ),
               Divider(
                 thickness: 1,
                 color: Colors.green,
+                height: 40,
               ),
               SizedBox(
                 height: 150,

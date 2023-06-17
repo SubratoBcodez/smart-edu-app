@@ -31,4 +31,7 @@ class AppStyle {
         backgroundColor: Colors.green,
         icon: Icon(Icons.done),
       );
+
+  BottomNavigationBarItem navBar(icons, labels) =>
+      BottomNavigationBarItem(icon: Icon(icons), label: labels);
 }
