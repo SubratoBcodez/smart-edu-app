@@ -1,19 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
-class ClassSch extends StatefulWidget {
+class MakeupExam extends StatefulWidget {
+  const MakeupExam({super.key});
+
   @override
-  State<ClassSch> createState() => _ClassSchState();
+  State<MakeupExam> createState() => _MakeupExamState();
 }
 
-class _ClassSchState extends State<ClassSch> {
-  Stream<QuerySnapshot<Map<String, dynamic>>> classes() async* {
+class _MakeupExamState extends State<MakeupExam> {
+  final box = GetStorage();
+  String? uid;
+  String? email;
+  Stream<QuerySnapshot<Map<String, dynamic>>> MidExam() async* {
     yield* FirebaseFirestore.instance.collection('events').snapshots();
   }
 
   @override
   void initState() {
+    uid = box.read('uid');
+    email = box.read('email');
     super.initState();
   }
 
@@ -21,14 +29,14 @@ class _ClassSchState extends State<ClassSch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Class Schedule'),
+        title: Text('Makeup Exam'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Container(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: classes(),
+                stream: MidExam(),
                 builder: ((context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(
@@ -49,10 +57,12 @@ class _ClassSchState extends State<ClassSch> {
                             final now = DateTime.now();
                             DateFormat time = DateFormat('h:mm a');
 
+                            DateFormat date = DateFormat.yMMMMd();
+                            String sDate = date.format(startTime);
                             String sTime = time.format(startTime);
                             String eTime = time.format(endTime);
 
-                            String status = 'COMMING at ${sTime}';
+                            String status = 'COMMING on ${sDate}';
                             Color color = Colors.yellow;
                             if (now.isAfter(startTime) &&
                                 now.isBefore(endTime)) {
