@@ -9,7 +9,7 @@ class ClassSch extends StatefulWidget {
 
 class _ClassSchState extends State<ClassSch> {
   Stream<QuerySnapshot<Map<String, dynamic>>> classes() async* {
-    yield* FirebaseFirestore.instance.collection('events').snapshots();
+    yield* FirebaseFirestore.instance.collection('Classes').snapshots();
   }
 
   @override
@@ -21,7 +21,7 @@ class _ClassSchState extends State<ClassSch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF2ECC71),
         title: Text('Class Schedule'),
       ),
       body: Padding(
@@ -66,9 +66,13 @@ class _ClassSchState extends State<ClassSch> {
                               child: ListTile(
                                 leading: CircleAvatar(
                                   radius: 30,
+                                  backgroundColor: Color(0xFFEAECEE),
                                   // backgroundImage:
                                   //     NetworkImage(docs[index]['img_url']),
-                                  child: Icon(Icons.book_sharp),
+                                  child: Image.asset(
+                                    'assets/icons/lecture.png',
+                                    height: 35,
+                                  ),
                                 ),
                                 title: Text(docs[index]['name']),
                                 subtitle: Text(

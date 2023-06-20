@@ -15,7 +15,7 @@ class _FinalExamState extends State<FinalExam> {
   String? uid;
   String? email;
   Stream<QuerySnapshot<Map<String, dynamic>>> FinalExam() async* {
-    yield* FirebaseFirestore.instance.collection('events').snapshots();
+    yield* FirebaseFirestore.instance.collection('Final').snapshots();
   }
 
   @override
@@ -30,6 +30,7 @@ class _FinalExamState extends State<FinalExam> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Final Exam'),
+        backgroundColor: Color(0xFF2ECC71),
         centerTitle: true,
       ),
       body: Padding(
@@ -76,9 +77,11 @@ class _FinalExamState extends State<FinalExam> {
                               child: ListTile(
                                 leading: CircleAvatar(
                                   radius: 30,
-                                  // backgroundImage:
-                                  //     NetworkImage(docs[index]['img_url']),
-                                  child: Icon(Icons.book_sharp),
+                                  backgroundColor: Color(0xFFEAECEE),
+                                  child: Image.asset(
+                                    'assets/icons/exam_1.png',
+                                    height: 35,
+                                  ),
                                 ),
                                 title: Text(docs[index]['name']),
                                 subtitle: Text(

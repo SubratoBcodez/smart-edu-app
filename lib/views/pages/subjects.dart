@@ -29,7 +29,7 @@ class _SubjectsState extends State<Subjects> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF2ECC71),
         title: Text('Subjects'),
         centerTitle: true,
       ),
@@ -61,10 +61,12 @@ class _SubjectsState extends State<Subjects> {
                                 docs[index]['teacher'],
                               ),
                               leading: CircleAvatar(
+                                backgroundColor: Color(0xFFEAECEE),
                                 radius: 30,
-                                // backgroundImage:
-                                //     NetworkImage(docs[index]['img_url']),
-                                child: Icon(Icons.book_sharp),
+                                child: Image.asset(
+                                  'assets/icons/book.png',
+                                  height: 35,
+                                ),
                               ),
                               trailing: Text(
                                 docs[index]['classroom'],
