@@ -2,6 +2,7 @@ import 'package:get/route_manager.dart';
 import 'package:untitled5/views/exam_nav.dart';
 import 'package:untitled5/views/pages/about.dart';
 import 'package:untitled5/views/pages/classes.dart';
+import 'package:untitled5/views/pages/exam.dart';
 
 import '../views/home.dart';
 import '../views/intro.dart';
@@ -25,6 +26,7 @@ const String exam = '/exam_nav';
 const String notice = '/notice';
 const String notpage = '/noticepage';
 const String about = '/about';
+const String test = '/exam';
 
 // const String err = '/err';
 
@@ -41,6 +43,7 @@ List<GetPage> getPages = [
   GetPage(name: notice, page: () => Notice()),
   GetPage(name: notpage, page: () => NoticePage(data: Get.arguments)),
   GetPage(name: about, page: () => Developers()),
+  GetPage(name: test, page: () => MyWidget()),
 
   // GetPage(name: err, page: ()=>SplashScreen()),
 ];

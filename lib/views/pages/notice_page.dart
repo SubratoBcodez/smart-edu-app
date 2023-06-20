@@ -21,6 +21,7 @@ class _NoticePageState extends State<NoticePage> {
           'Notice Details',
           style: TextStyle(),
         ),
+        backgroundColor: Color(0xFF2ECC71),
         centerTitle: true,
       ),
       body: Column(

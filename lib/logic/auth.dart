@@ -56,6 +56,7 @@ class Auth {
           box.write('fname', fname);
           box.write('idnum', idnum);
           box.write('email', email);
+          box.write('uid', userCredential.uid);
 
           Get.toNamed(home);
         });
@@ -92,6 +93,7 @@ class Auth {
         Get.showSnackbar(AppStyle().successSnack('Access Granted'));
         box.write('logged', true);
         box.write('email', email);
+        box.write('_uid', userCredenttial.uid);
 
         Get.toNamed(home);
       }
