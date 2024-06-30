@@ -1,9 +1,12 @@
-# Smart Notifier App
+# Smart Edu App
 A Smart- Exam, Class, Course,  Routine, Notice, etc management app for students
 
-#About
+# About
 Students can Sign Up, and sign in. Using this app they can track and monitor their class, and exam routines. Also, they can notified of the latest notice. They can know their teacher and subject information.
 
+## Screenshoots
+<img src="Screenshot 2023-06-20 215842.png"/> <img src="Screenshot 2023-06-20 215858.png"/><img src="Screenshot 2023-06-20 215936.png"/>
+<img src="Screenshot 2023-06-20 215952.png"/><img src="Screenshot 2023-06-21 021145.png"/><img src="Screenshot 2023-06-20 222626.png"/>
 ## Getting Started
 
 This project is a starting point for a Flutter application.
